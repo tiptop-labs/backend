@@ -1,0 +1,6 @@
+- name: install and configure Exit4
+  block:
+  - name: install exim4-config 
+    apt:
+      name: exim4-config
+      state: latest

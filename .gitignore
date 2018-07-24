@@ -1,1 +1,7 @@
+**/*.swp
+*.retry
+production
+doc/arch.graffle
+group_vars/all.yml
 keys/
+venv/
