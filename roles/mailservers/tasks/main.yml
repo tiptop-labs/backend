@@ -1,3 +1,5 @@
+- import_tasks: hosts.yml
+  when: ansible_system_vendor == 'Hetzner' 
 - name: install and configure Exit4
   block:
   - name: install exim4-config 
