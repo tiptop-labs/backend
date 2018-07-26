@@ -6,3 +6,11 @@
     apt:
       name: exim4-config
       state: latest
+  - name: copy config.dat
+    template:
+      src: config.dat.j2
+      dest: '/tmp/config.dat'
+  - name: dpkg-reconfigure exim4-config
+    shell: dpkg-reconfigure -fnoninteractive exim4-config 
+    environment:
+      DEBCONF_DB_OVERRIDE: File /tmp/config.dat
