@@ -1,7 +1,8 @@
-**/*.swp
-*.retry
 production
-doc/arch.graffle
+doc/*.graffle
 keys/
 roles/mailservers/vars/main.yml
 venv/
+**/.DS_Store
+**/*.retry
+**/*.swp

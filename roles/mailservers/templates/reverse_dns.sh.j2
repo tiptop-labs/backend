@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "$#" -ne 0 ]; then
+  echo "usage: `basename $0`"
+  exit
+fi
+
+ip=$(dig +short -x {{ansible_default_ipv4.address}})
+[ $ip = "{{ansible_hostname}}.{{mailservers_domain}}." ]
+
+metric_name="backend_mailservers_reverse_dns"
+labels='domain="{{mailservers_domain}}"'
+value=$?
+
+{{mailservers_prom_path}}/create_textfile.sh $metric_name $labels $value

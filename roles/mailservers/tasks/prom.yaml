@@ -1,0 +1,27 @@
+- name: "create {{mailservers_prom_directory}}"
+  file:
+    path: "{{mailservers_prom_directory}}"
+    state: directory
+- name: "create {{mailservers_prom_path}}"
+  file:
+    path: "{{mailservers_prom_path}}"
+    state: directory
+
+- name: install dig
+  apt:
+    name: dnsutils
+- name: copy create_textfile.sh
+  template:
+    src: create_textfile.sh.j2
+    dest: "{{mailservers_prom_path}}/create_textfile.sh"
+    mode: u+x
+- name: copy {{role_name}}_reverse_dns.sh
+  template:
+    src: reverse_dns.sh.j2
+    dest: "{{mailservers_prom_path}}/{{role_name}}_reverse_dns.sh"
+    mode: u+x
+- cron:
+    name: mail_prom_hourly.sh
+    minute: 0
+    user: root
+    job: "{{mailservers_prom_path}}/{{role_name}}_reverse_dns.sh"
