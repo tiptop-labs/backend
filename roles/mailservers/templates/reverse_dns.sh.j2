@@ -11,5 +11,8 @@ ip=$(dig +short -x {{ansible_default_ipv4.address}})
 metric_name="backend_mailservers_reverse_dns"
 labels='domain="{{mailservers_domain}}"'
 value=$?
+help="reverse DNS lookup of domain"
+type=untyped
 
-{{mailservers_prom_path}}/create_textfile.sh $metric_name $labels $value
+{{common_bin}}/create_textfile.sh \
+  "$metric_name" "$labels" "$value" "$help" "$type"

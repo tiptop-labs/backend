@@ -1,0 +1,21 @@
+- name: copy prometheus-node-exporter
+  copy:
+    src: prometheus-node-exporter
+    dest: /etc/default/prometheus-node-exporter 
+- name: install prometheus-node-exporter
+  apt:
+    name: prometheus-node-exporter
+    dpkg_options: 'force-confdef,force-confold'
+- name: "mkdir {{common_bin}}"
+  file:
+    path: "{{common_bin}}"
+    state: directory
+- name: copy create_textfile.sh
+  template:
+    src: create_textfile.sh.j2
+    dest: "{{common_bin}}/create_textfile.sh"
+    mode: u+x
+- name: "mkdir {{common_text_exporter}}"
+  file:
+    path: "{{common_text_exporter}}"
+    state: directory

@@ -1,0 +1,2 @@
+common_bin: /opt/backend/bin
+common_text_exporter: /opt/backend/text_exporter

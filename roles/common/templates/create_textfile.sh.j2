@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ "$#" -ne 5 ]; then
+  echo "usage: `basename $0` metric_name labels value help type"
+  exit
+fi
+
+metric_name="$1"
+labels="$2"
+value="$3"
+help="$4"
+type="$5"
+timestamp=$(date +%s)
+
+tmp=$(mktemp)
+chmod 0644 $tmp
+echo "# HELP $metric_name $help" > $tmp
+echo "# TYPE $metric_name $type" >> $tmp
+echo "$metric_name{$labels} $value $timestamp" >> $tmp
+mv $tmp /var/lib/prometheus/node-exporter/${metric_name}.prom

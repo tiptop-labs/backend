@@ -1,12 +1,10 @@
 - import_tasks: hosts.yml
   when: ansible_system_vendor == 'Hetzner' 
 
-- name: install and configure Exit4
-  block:
+- block:
   - name: install exim4-config 
     apt:
       name: exim4-config
-      state: latest
   - name: copy config.dat
     template:
       src: config.dat.j2
@@ -15,4 +13,4 @@
     shell: dpkg-reconfigure -fnoninteractive exim4-config 
     environment:
       DEBCONF_DB_OVERRIDE: File /tmp/config.dat
-- import_tasks: prom.yaml
+- import_tasks: prometheus.yml
