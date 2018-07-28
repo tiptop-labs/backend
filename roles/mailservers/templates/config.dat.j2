@@ -24,11 +24,11 @@ Flags: seen
 
 Name: exim4/dc_other_hostnames
 Template: exim4/dc_other_hostnames
-Value: {{mailservers_domain}}
+Value: {{common_domain}}
 Owners: exim4-config
 Flags: mailname, seen
 Variables:
- fqdn = {{ansible_hostname}}.{{mailservers_domain}}
+ fqdn = {{ansible_hostname}}.{{common_domain}}
 
 Name: exim4/dc_postmaster
 Template: exim4/dc_postmaster
@@ -67,7 +67,7 @@ Owners: exim4-config
 
 Name: exim4/mailname
 Template: exim4/mailname
-Value: {{ansible_hostname}}.{{mailservers_domain}}
+Value: {{ansible_hostname}}.{{common_domain}}
 Owners: exim4-config
 Flags: seen
 

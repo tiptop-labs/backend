@@ -1,6 +1,9 @@
+- hosts: dcservers
+  remote_user: root
+  roles:
+  - common
 - hosts: mailservers
   remote_user: root
-
   roles:
   - common
   - mailservers

@@ -1,7 +1,7 @@
 production
 doc/*.graffle
 keys/
-roles/mailservers/vars/main.yml
+roles/common/vars/private.yml
 venv/
 **/.DS_Store
 **/*.retry

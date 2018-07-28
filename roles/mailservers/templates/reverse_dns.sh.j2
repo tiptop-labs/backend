@@ -6,10 +6,10 @@ if [ "$#" -ne 0 ]; then
 fi
 
 ip=$(dig +short -x {{ansible_default_ipv4.address}})
-[ $ip = "{{ansible_hostname}}.{{mailservers_domain}}." ]
+[ $ip = "{{ansible_hostname}}.{{common_domain}}." ]
 
 metric_name="backend_mailservers_reverse_dns"
-labels='domain="{{mailservers_domain}}"'
+labels='domain="{{common_domain}}"'
 value=$?
 help="reverse DNS lookup of domain"
 type=untyped

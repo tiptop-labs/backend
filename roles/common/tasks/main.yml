@@ -1,1 +1,2 @@
-- import_tasks: prometheus.yml
+- include_vars: private.yml
+- import_tasks: prometheus_exporters.yml
