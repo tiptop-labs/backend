@@ -1,0 +1,8 @@
+- name: install root certificate
+  block:
+  - name: copy /usr/local/share/ca-certificates/backend.server.ca.crt 
+    copy:
+      src: backend.server.ca.crt
+      dest: /usr/local/share/ca-certificates/backend.server.ca.crt
+  - name: update-ca-certificates
+    shell: update-ca-certificates

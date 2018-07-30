@@ -12,4 +12,5 @@
     shell: dpkg-reconfigure -fnoninteractive exim4-config 
     environment:
       DEBCONF_DB_OVERRIDE: File /tmp/config.dat
+- import_tasks: apache.yml
 - import_tasks: prometheus_exporters.yml

@@ -1,0 +1,23 @@
+- name: configure Apache
+  block:
+  - name: edit /etc/apache2/ports.conf
+    copy: content="Listen 9100" dest=/etc/apache2/ports.conf
+  - name: copy /etc/ssl/certs/backend.server.mail.crt
+    copy:
+      src: backend.server.mail.crt
+      dest: /etc/ssl/certs/backend.server.mail.crt
+  - name: copy /etc/ssl/private/backend.server.mail.key
+    copy:
+      src: backend.server.mail.key
+      dest: /etc/ssl/private/backend.server.mail.key
+      mode: 0600
+  - name: create available site 001-reverse-proxy
+    template:
+      src: 001-reverse-proxy.conf.j2
+      dest: /etc/apache2/sites-available/001-reverse-proxy.conf
+  - name: enable site 001-reverse-proxy
+    block:
+    - name: enable site 001-reverse-proxy
+      shell: a2ensite 001-reverse-proxy
+    - name: systemctl reload apache2.service
+      shell: systemctl reload apache2.service

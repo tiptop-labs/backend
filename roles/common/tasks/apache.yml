@@ -1,0 +1,16 @@
+- name: install Apache
+  blick:
+  - name: iptables -A INPUT -p tcp --dport http -j REJECT
+    iptables: chain=INPUT protocol=tcp destination_port=http jump=REJECT 
+  - name: iptables -A INPUT -p tcp --dport https -j REJECT
+    iptables: chain=INPUT protocol=tcp destination_port=https jump=REJECT 
+  - name: install Apache 
+    apt: name=apache2 
+  - name: edit Apache2 Debian Default Page
+    copy: content="<html/>" dest=/var/www/html/index.html
+  - name: iptables -D INPUT -p tcp --dport http -j REJECT
+    iptables: chain=INPUT protocol=tcp destination_port=http jump=REJECT \
+      state=absent
+  - name: iptables -D INPUT -p tcp --dport https -j REJECT
+    iptables: chain=INPUT protocol=tcp destination_port=https jump=REJECT \
+      state=absent

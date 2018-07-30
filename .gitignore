@@ -1,7 +1,14 @@
-production
+hosts
 doc/*.graffle
-keys/
+keys/backend.client.ssh
+keys/backend.client.ssh.pub
+keys/backend.client.ds.crt
+keys/backend.client.ds.key
 roles/common/vars/private.yml
+roles/common/files/backend.server.ca.key
+roles/common/files/backend.server.ca.crt
+roles/mailservers/files/backend.server.mail.key
+roles/mailservers/files/backend.server.mail.crt
 venv/
 **/.DS_Store
 **/*.retry

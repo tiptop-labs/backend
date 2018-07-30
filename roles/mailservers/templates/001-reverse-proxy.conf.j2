@@ -1,0 +1,28 @@
+Listen 9100
+LoadModule authz_core_module /usr/lib/apache2/modules/autzh_core_module.so
+LoadModule proxy_http_module /usr/lib/apache2/modules/mod_proxy_http.so
+LoadModule proxy_module /usr/lib/apache2/modules/mod_proxy.so
+LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
+<VirtualHost *:9100>
+  ServerName {{ansible_hostname}}.{{common_domain}}:9100 
+  SSLEngine on
+  SSLCipherSuite HIGH:!aNULL:!MD5
+  SSLCertificateFile "/etc/ssl/certs/backend.server.mail.crt"
+  SSLCertificateKeyFile "/etc/ssl/private/backend.server.mail.key"
+  ErrorLog /var/log/apache2/error.log
+  CustomLog /var/log/apache2/access.log backend 
+  LogLevel info
+  <Location "/">
+    Require all denied
+    Options none
+    AllowOverride none
+  </Location>
+  <Location "/metrics">
+    Require all denied
+{% for host in groups['dcservers'] %}
+    Require ip {{host}} 
+{% endfor %}
+    ProxyPass "http://localhost:9101/metrics"
+    ProxyPassReverse "http://localhost:9101/metrics"
+  </Location>
+</VirtualHost>
