@@ -4,7 +4,7 @@
   - name: install exim4-config 
     apt:
       name: exim4-config
-  - name: copy config.dat
+  - name: copy /tmp/config.dat
     template:
       src: config.dat.j2
       dest: '/tmp/config.dat'
@@ -13,4 +13,5 @@
     environment:
       DEBCONF_DB_OVERRIDE: File /tmp/config.dat
 - import_tasks: apache.yml
-- import_tasks: prometheus_exporters.yml
+- import_tasks: node-exporter.yml
+- import_tasks: text-collectors.yml

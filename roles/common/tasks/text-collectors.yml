@@ -1,0 +1,30 @@
+- name: "mkdir {{common_bin}}"
+  file:
+    path: "{{common_bin}}"
+    state: directory
+- name: "copy {{common_bin}}/create_textfile.sh"
+  template:
+    src: create_textfile.sh.j2
+    dest: "{{common_bin}}/create_textfile.sh"
+    mode: u+x
+- name: "mkdir {{common_text_exporter}}"
+  file:
+    path: "{{common_text_exporter}}"
+    state: directory
+- name: install text collector apt.sh
+  block:
+  - name: "copy {{common_text_exporter}}/apt.sh" 
+    copy:
+      src: apt.sh
+      dest: "{{common_text_exporter}}/apt.sh"
+      mode: u+x
+  - name: crontab apt
+    cron:
+      name: apt 
+      minute: 0
+      user: root
+      job: >
+        tmp=$(mktemp);
+        chmod 0644 $tmp;
+        {{common_text_exporter}}/apt.sh >> $tmp;
+        mv $tmp /var/lib/prometheus/node-exporter/apt.prom

@@ -1,0 +1,16 @@
+- name: install dig
+  apt:
+    name: dnsutils
+- name: install text collector {{role_name}}_reverse_dns.sh
+  block:
+  - name: copy {{role_name}}_reverse_dns.sh
+    template:
+      src: reverse_dns.sh.j2
+      dest: "{{common_text_exporter}}/{{role_name}}_reverse_dns.sh"
+      mode: u+x
+  - name: "crontab backend_{{role_name}}_reverse_dns"
+    cron:
+      name: backend_{{role_name}}_reverse_dns
+      minute: 0
+      user: root
+      job: "{{common_text_exporter}}/{{role_name}}_reverse_dns.sh"

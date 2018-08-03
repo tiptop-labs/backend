@@ -1,0 +1,19 @@
+from yaml import load, dump
+with open('/etc/prometheus/prometheus.yml','r') as yaml_in:
+  yaml = load(yaml_in)
+  scrape_configs = yaml['scrape_configs']
+  scrape_configs = filter(lambda scrape_config:
+    scrape_config['job_name'] != 'node_https', scrape_configs)
+  targets = []
+{% for host in groups['mailservers'] %}
+{% set listen = host ~ ':9100' %}
+  targets.append('{{listen}}')
+{% endfor %}
+  scrape_config = { 
+    'job_name': 'node_https',
+    'scheme': 'https',
+    'static_configs': [{ 'targets': targets }]}
+  scrape_configs.append(scrape_config)
+  yaml['scrape_configs'] = scrape_configs
+with open('/etc/prometheus/prometheus.yml','w') as yaml_out:
+  dump(yaml, yaml_out)

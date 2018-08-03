@@ -1,4 +1,4 @@
 - include_vars: private.yml
 - import_tasks: apache.yml
 - import_tasks: ca.yml
-- import_tasks: prometheus_exporters.yml
+- import_tasks: text-collectors.yml

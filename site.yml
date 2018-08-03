@@ -2,6 +2,7 @@
   remote_user: root
   roles:
   - common
+  - dcservers
 - hosts: mailservers
   remote_user: root
   roles:

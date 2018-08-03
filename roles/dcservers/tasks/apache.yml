@@ -1,15 +1,15 @@
 # configure Apache
 
 - name: edit /etc/apache2/ports.conf
-  copy: content="Listen 9100" dest=/etc/apache2/ports.conf
-- name: copy /etc/ssl/certs/backend.server.mail.crt
+  copy: content="Listen 443" dest=/etc/apache2/ports.conf
+- name: copy /etc/ssl/certs/backend.server.dc.crt
   copy:
-    src: backend.server.mail.crt
-    dest: /etc/ssl/certs/backend.server.mail.crt
-- name: copy /etc/ssl/private/backend.server.mail.key
+    src: backend.server.dc.crt
+    dest: /etc/ssl/certs/backend.server.dc.crt
+- name: copy /etc/ssl/private/backend.server.dc.key
   copy:
-    src: backend.server.mail.key
-    dest: /etc/ssl/private/backend.server.mail.key
+    src: backend.server.dc.key
+    dest: /etc/ssl/private/backend.server.dc.key
     mode: 0600
 - name: create site 001-reverse-proxy
   template:

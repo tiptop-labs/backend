@@ -1,0 +1,36 @@
+# install Prometheus
+
+- name: iptables -A INPUT -p tcp --dport 9090 -j REJECT 
+  iptables: chain=INPUT protocol=tcp destination_port=9090 jump=REJECT
+- name: install Prometheus
+  apt: name=prometheus
+- name: copy /etc/systemd/system/prometheus.service
+  shell: cp /lib/systemd/system/prometheus.service \
+    /etc/systemd/system
+- name: edit /etc/systemd/system/prometheus.service
+  replace:
+    path: /etc/systemd/system/prometheus.service
+    regexp: '^(ExecStart=/usr/bin/prometheus \$ARGS)$'
+    replace: '\1 --web.listen-address=localhost:9090'
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload
+- name: iptables -D INPUT -p tcp --dport 9090 -j REJECT 
+  iptables: chain=INPUT protocol=tcp destination_port=9090 jump=REJECT \
+    state=absent
+- name: configure prometheus
+  block:
+  - name: create temporary directory
+    tempfile: state=directory
+    register: temp
+  - name: "create {{temp.path}}/configure_prometheus.py"
+    template:
+      src: configure_prometheus.py.j2
+      dest: "{{temp.path}}/configure_prometheus.py"
+  - name: install python-pip, python-setuptools
+    apt: name=python-pip,python-setuptools
+  - name: install PyYAML
+    shell: pip install pyyaml
+  - name: edit /etc/prometheus/prometheus.yml
+    shell: "python {{temp.path}}/configure_prometheus.py"
+- name: restart prometheus
+  service: name=prometheus state=restarted 
