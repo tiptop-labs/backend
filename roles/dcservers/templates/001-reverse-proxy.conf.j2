@@ -17,6 +17,7 @@ LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
   CustomLog /var/log/apache2/access.log backend 
   LogLevel info
   <Location "/">
+    SSLRequire %{SSL_CLIENT_S_DN_CN} eq "backend_client_dc"
     Redirect "/alerts" "/prometheus/alerts"
     Redirect "/api" "/prometheus/api"
     Redirect "/config" "/prometheus/config"
@@ -28,6 +29,7 @@ LoadModule ssl_module /usr/lib/apache2/modules/mod_ssl.so
     Redirect "/targets" "/prometheus/targets"
   </Location>
   <Location "/prometheus">
+    SSLRequire %{SSL_CLIENT_S_DN_CN} eq "backend_client_dc"
     ProxyPass "http://localhost:9090"
     ProxyPassReverse "http://localhost:9090"
   </Location>

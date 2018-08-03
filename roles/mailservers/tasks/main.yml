@@ -4,14 +4,17 @@
   - name: install exim4-config 
     apt:
       name: exim4-config
-  - name: copy /tmp/config.dat
+  - name: create temporary directory
+    tempfile: state=directory
+    register: temp
+  - name: copy {{temp.path}}/config.dat
     template:
       src: config.dat.j2
-      dest: '/tmp/config.dat'
+      dest: '{{temp.path}}/config.dat'
   - name: dpkg-reconfigure exim4-config
     shell: dpkg-reconfigure -fnoninteractive exim4-config 
     environment:
-      DEBCONF_DB_OVERRIDE: File /tmp/config.dat
+      DEBCONF_DB_OVERRIDE: File {{temp.path}}/config.dat
 - import_tasks: apache.yml
 - import_tasks: node-exporter.yml
 - import_tasks: text-collectors.yml
