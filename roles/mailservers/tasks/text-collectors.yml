@@ -6,11 +6,11 @@
   - name: copy {{role_name}}_reverse_dns.sh
     template:
       src: reverse_dns.sh.j2
-      dest: "{{common_text_exporter}}/{{role_name}}_reverse_dns.sh"
+      dest: "{{common_text_collectors}}/{{role_name}}_reverse_dns.sh"
       mode: u+x
   - name: "crontab backend_{{role_name}}_reverse_dns"
     cron:
       name: backend_{{role_name}}_reverse_dns
-      minute: 0
+      minute: "*/5"
       user: root
-      job: "{{common_text_exporter}}/{{role_name}}_reverse_dns.sh"
+      job: "{{common_text_collectors}}/{{role_name}}_reverse_dns.sh"
